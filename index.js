@@ -7,6 +7,7 @@ function Demo(props) {
     const extraBlock = extra ? (<div>Extra Div</div>) : null
 
     return (<div>
+        {extraBlock}
         <button onclick={sort}>Sort</button>
         <ul>
             {items.map((item) => {
@@ -14,7 +15,6 @@ function Demo(props) {
             })}
         </ul>
         <input type="text" onkeyup={onkeyup} value={value}/>
-        {extraBlock}
         <span>Extra Span</span>
     </div>)
 }
