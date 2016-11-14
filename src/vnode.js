@@ -1,25 +1,9 @@
 import _ from './utils.js'
 
-function setProp(el, prop, value) {
-    if(prop === 'value') {
-        el.value = value
-    } else if (prop.indexOf('on') === 0) {
-        const event = prop.slice(2).toLowerCase()
-        el.addEventListener(event, value)
-    } else {
-        if(value !== undefined) {
-            el.setAttribute(prop, value)
-        } else {
-            el.removeAttribute(prop)
-        }
-    }
-}
-
-export default class VNode {
+class VNode {
     constructor(tagName, props, ...children) {
         this.tagName = tagName || 'div'
         this.props = props || {}
-        this.key = props.key || void 0
         this.children = _.flatten(children)
 
         this.dealChildren()
@@ -29,17 +13,21 @@ export default class VNode {
         const el = document.createElement(this.tagName)
         
         for(let prop in this.props) {
-            setProp(el, prop, this.props[prop])
+            _.setProp(el, prop, this.props[prop])
         }
 
-        for(let child in this.children) {
-            let childEl
-            if(child.render) {
-                childEl = child.render()
-            } else {
-                childEl = document.createTextNode(child)
+        for(let child of this.children) {
+            if(_.isDefined(child)) {
+                let childEl
+
+                if(child.render) {
+                    childEl = child.render()
+                } else{
+                    childEl = document.createTextNode(child)
+                }
+
+                el.appendChild(childEl)
             }
-            el.appendChild(childEl)
         }
 
         return el
@@ -48,7 +36,7 @@ export default class VNode {
     dealChildren() {
         let count = 0
         this.children.forEach((child) => {
-            if(_.isType(child, Element)) {
+            if(child instanceof Element) {
                 count += child.count
             } else {
                 child = '' + child
@@ -57,4 +45,8 @@ export default class VNode {
         })
         this.count = count
     }
+}
+
+export default function h(...args) {
+    return new VNode(...args)
 }

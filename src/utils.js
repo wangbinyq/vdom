@@ -12,11 +12,11 @@ export default {
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
             s4() + '-' + s4() + s4() + s4();
     },
-    isType(obj, type) {
-        return obj.constrcutor === type
+    isDefined(o){
+        return o !== null && o !== undefined
     },
-    isString(obj) {
-        return this.isType(obj, String)
+    isString(o) {
+        return typeof o === 'string'
     },
     isObject(o) {
         return typeof o === 'object'
@@ -37,7 +37,23 @@ export default {
                 return false
             }
         }
-        
+
         return true
+    },
+    setProp(dom, prop, value) {
+        if(prop === 'className') {
+            dom.className = value
+        } else if(prop === 'value') {
+            // TODO cursor position
+            dom.value = value
+        } else if(prop.indexOf('on') === 0) {
+            dom[prop] = value
+        } else {
+            if(value === undefined) {
+                dom.removeAttribute(prop)
+            } else {
+                dom.setAttribute(prop, value)
+            }
+        }
     }
 }

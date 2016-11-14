@@ -1,7 +1,6 @@
-import Vue from 'vue'
-import App from './App.vue'
+import h from './vnode'
+import update from './update'
 
-new Vue({
-  el: '#app',
-  render: h => h(App)
-})
+export {
+    h, update
+}

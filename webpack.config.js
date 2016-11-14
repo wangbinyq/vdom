@@ -2,31 +2,20 @@ var path = require('path')
 var webpack = require('webpack')
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './index.js',
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
     filename: 'build.js'
   },
   module: {
-    rules: [
+    loaders: [
       {
         test: /\.js$/,
         loader: 'babel',
-        exclude: /node_modules/
-      },
-      {
-        test: /\.(png|jpg|gif|svg)$/,
-        loader: 'file',
-        options: {
-          name: '[name].[ext]?[hash]'
-        }
+        exclude: /node_modules/,
       }
     ]
-  },
-  devServer: {
-    historyApiFallback: true,
-    noInfo: true
   },
   devtool: '#eval-source-map'
 }
